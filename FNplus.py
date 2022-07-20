@@ -97,7 +97,9 @@ class FreeNom:
 
         # domains
         domains = re.findall(domain_info_ptn, r.text)
-
+        
+        msg += '账户 '+user_list[i]+':\n\n'
+        
         # renew domains
         for domain, days, renewal_id in domains:
             days = int(days)
