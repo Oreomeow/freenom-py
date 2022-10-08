@@ -21,10 +21,20 @@ MAIL_TO: 收件人邮箱可与发件人相同 address@vip.qq.com 或 123456@qq.c
 依赖模块说明
 pip install -r requirements.txt / pip3 install -r requirements.txt
 """
-import utils.settings
+
 from utils.exception import CustomException
 from utils.freenom import FreeNom
 from utils.mail import EmailPoster
+from utils.settings import (
+    FN_ID,
+    FN_PW,
+    MAIL_ADDRESS,
+    MAIL_HOST,
+    MAIL_PORT,
+    MAIL_PW,
+    MAIL_TO,
+    MAIL_USER,
+)
 
 
 def main():

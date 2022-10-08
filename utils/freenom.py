@@ -8,9 +8,7 @@ from utils.exception import CustomException
 
 
 class FreeNom(object):
-    """
-    FreeNom api请求
-    """
+    """FreeNom api 请求"""
 
     # 登录
     LOGIN_URL = "https://my.freenom.com/dologin.php"
@@ -86,9 +84,8 @@ class FreeNom(object):
 
         if response.status_code == 200:
             return True
-        else:
-            print("FreeNom login failed")
-            raise CustomException("调用登录接口失败")
+        print("FreeNom login failed")
+        raise CustomException("调用登录接口失败")
 
     def get_domains(self) -> str:
         headers = {"Referer": "https://my.freenom.com/clientarea.php"}
@@ -96,9 +93,8 @@ class FreeNom(object):
 
         if response.status_code == 200:
             return response.text
-        else:
-            print("FreeNom check domain status failed")
-            raise CustomException("调用获取域名信息接口失败")
+        print("FreeNom check domain status failed")
+        raise CustomException("调用获取域名信息接口失败")
 
     def renew_domain(self, token, renewalid) -> str:
         headers = {
@@ -116,9 +112,8 @@ class FreeNom(object):
         response = self.session.post(self.RENEW_DOMAIN_URL, data=data, headers=headers)
         if response.status_code == 200:
             return response.text
-        else:
-            print("FreeNom renew domain failed")
-            raise CustomException("调用续期接口失败接口失败")
+        print("FreeNom renew domain failed")
+        raise CustomException("调用续期接口失败接口失败")
 
     def __del__(self):
         self.session.close()

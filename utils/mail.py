@@ -3,23 +3,19 @@ import traceback
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from jinja2 import Environment, FileSystemLoader, Template
+from jinja2 import Environment, FileSystemLoader
 
-from . import settings
+from utils import settings
 
 
 class EmailPoster(object):
-    """
-    邮件发送基础类
-
-    """
+    """邮件发送基础类"""
 
     @staticmethod
     def get_template():
         loader = FileSystemLoader("templates")
         env = Environment(autoescape=True, loader=loader)
-        template = env.get_template("default.html")
-        return template
+        return env.get_template("default.html")
 
     def send(self, data: dict):
         payload = data.get("payload", {})
