@@ -37,21 +37,31 @@ from utils.settings import (
 )
 
 
-def main():
-    print("配置信息")
-    print(
-        [MAIL_TO, MAIL_PORT, MAIL_HOST, MAIL_ADDRESS, MAIL_PW, MAIL_USER, FN_ID, FN_PW]
+def mask_data(data: str) -> str:
+    return "".join(
+        ["*" if i > 2 and i < len(data) - 3 else data[i] for i in range(len(data))]
     )
-    if not all(
-        [MAIL_TO, MAIL_PORT, MAIL_HOST, MAIL_ADDRESS, MAIL_PW, MAIL_USER, FN_ID, FN_PW]
-    ):
-        raise CustomException("参数缺失")
 
-    to = [MAIL_TO]
+
+def main():
+    envs = [
+        FN_ID,
+        FN_PW,
+        MAIL_USER,
+        MAIL_ADDRESS,
+        MAIL_PW,
+        MAIL_HOST,
+        MAIL_PORT,
+        MAIL_TO,
+    ]
+    print("配置信息（脱敏后）：")
+    print([mask_data(env) if isinstance(env, str) else env for env in envs])
+    if not all(envs):
+        raise CustomException("参数缺失")
 
     body = {
         "subject": "FreeNom 自动续期",
-        "to": to,
+        "to": [MAIL_TO],
     }
     try:
         results = FreeNom().run()

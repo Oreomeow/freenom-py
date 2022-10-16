@@ -35,7 +35,7 @@ def qlnotify(desp):
     cur_path = os.path.abspath(os.path.dirname(__file__))
     if os.path.exists(f"{cur_path}/notify.py"):
         try:
-            from notify import send
+            from notify import send  # type: ignore
         except Exception:
             print("加载通知服务失败~")
         else:
@@ -46,7 +46,7 @@ class FreeNom:
     def __init__(self, username: str, password: str):
         self._u = username
         self._p = password
-        self._s = requests.Session()
+        self._s = requests.session()
         self._s.headers.update(
             {
                 "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/79.0.3945.130 Safari/537.36"
@@ -63,15 +63,13 @@ class FreeNom:
         r = self._s.post(LOGIN_URL, data={"username": self._u, "password": self._p})
         return r.status_code == 200
 
-    def renew(self):
-        global msg
+    def renew(self) -> str:
         msg = ""
         # login
-        ok = self._login()
-        if not ok:
+        if not self._login():
             msg = "login failed"
             print(msg)
-            return
+            return msg
 
         # check domain status
         self._s.headers.update({"referer": "https://my.freenom.com/clientarea.php"})
@@ -81,14 +79,14 @@ class FreeNom:
         if not re.search(login_status_ptn, r.text):
             msg = "get login status failed"
             print(msg)
-            return
+            return msg
 
         # page token
         match = re.search(token_ptn, r.text)
         if not match:
             msg = "get page token failed"
             print(msg)
-            return
+            return msg
         token = match[1]
 
         # domains
@@ -96,8 +94,7 @@ class FreeNom:
 
         # renew domains
         for domain, days, renewal_id in domains:
-            days = int(days)
-            if days < 14:
+            if int(days) < 14:
                 self._s.headers.update(
                     {
                         "referer": f"https://my.freenom.com/domains.php?a=renewdomain&domain={renewal_id}",

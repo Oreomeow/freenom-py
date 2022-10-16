@@ -7,7 +7,7 @@ from utils import settings
 from utils.exception import CustomException
 
 
-class FreeNom(object):
+class FreeNom:
     """FreeNom api 请求"""
 
     # 登录
@@ -96,7 +96,7 @@ class FreeNom(object):
         print("FreeNom check domain status failed")
         raise CustomException("调用获取域名信息接口失败")
 
-    def renew_domain(self, token, renewalid) -> str:
+    def renew_domain(self, token, renewalid: str) -> str:
         headers = {
             **self.headers,
             "Referer": "https://my.freenom.com/domains.php?a=renewdomain&domain="
